@@ -67,6 +67,8 @@ The following currencies are supported for conversion:
 | CAD           | Canada Dollar        |
 | JPY           | Japan Yen            |
 
+For review and test pourposes will not add all currencies.
+
 ## Currency Conversion Rules
 
 - Exchange rates are fetched from the U.S. Treasury Reporting Rates of Exchange API
