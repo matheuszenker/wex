@@ -72,7 +72,7 @@ class PurchaseControllerTest {
                 .param("currency", "EUR"))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.id").value("123"))
-                .andExpect(jsonPath("$.convertedAmount").value("85.00"))
+                .andExpect(jsonPath("$.convertedAmount").value(85.00))
                 .andExpect(jsonPath("$.targetCurrency").value("EUR"));
     }
 }
