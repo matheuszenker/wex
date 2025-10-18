@@ -35,7 +35,6 @@ class TreasuryExchangeRateServiceTest {
 
     @Test
     void getExchangeRate_ValidRequest_ReturnsRate() {
-        // Arrange
         LocalDate date = LocalDate.now();
         String currency = "EUR";
         
@@ -52,16 +51,13 @@ class TreasuryExchangeRateServiceTest {
             ArgumentMatchers.eq(TreasuryRateResponse.class)))
                 .thenReturn(ResponseEntity.ok(response));
 
-        // Act
         BigDecimal rate = exchangeRateService.getExchangeRate(currency, date);
 
-        // Assert
         assertEquals(0, new BigDecimal("1.2").compareTo(rate));
     }
 
     @Test
     void getExchangeRate_RateOlderThan6Months_ThrowsException() {
-        // Arrange
         LocalDate date = LocalDate.now();
         String currency = "EUR";
         LocalDate oldDate = date.minusMonths(7);
@@ -79,13 +75,12 @@ class TreasuryExchangeRateServiceTest {
             ArgumentMatchers.eq(TreasuryRateResponse.class)))
                 .thenReturn(ResponseEntity.ok(response));
 
-        // Act & Assert
+        
         assertThrows(ExchangeRateNotFoundException.class, () -> exchangeRateService.getExchangeRate(currency, date));
     }
 
     @Test
     void getExchangeRate_NoRateFound_ThrowsException() {
-        // Arrange
         LocalDate date = LocalDate.now();
         String currency = "INVALID";
         
@@ -97,7 +92,6 @@ class TreasuryExchangeRateServiceTest {
             ArgumentMatchers.eq(TreasuryRateResponse.class)))
                 .thenReturn(ResponseEntity.ok(response));
 
-        // Act & Assert
         assertThrows(ExchangeRateNotFoundException.class, () -> exchangeRateService.getExchangeRate(currency, date));
     }
 }

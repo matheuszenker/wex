@@ -38,7 +38,6 @@ class PurchaseServiceTest {
 
     @Test
     void createPurchase_ValidRequest_ReturnsSavedPurchase() {
-        // Arrange
         PurchaseRequest request = new PurchaseRequest();
         request.setDescription("Test Purchase");
         request.setTransactionDate(LocalDate.now());
@@ -52,10 +51,8 @@ class PurchaseServiceTest {
 
         when(purchaseRepository.save(any(Purchase.class))).thenReturn(savedPurchase);
 
-        // Act
         PurchaseResponse response = purchaseService.createPurchase(request);
 
-        // Assert
         assertNotNull(response);
         assertEquals("123", response.getId());
         assertEquals("Test Purchase", response.getDescription());
@@ -64,7 +61,6 @@ class PurchaseServiceTest {
 
     @Test
     void getPurchaseInCurrency_ExistingPurchase_ReturnsConvertedPurchase() {
-        // Arrange
         String purchaseId = "123";
         String targetCurrency = "EUR";
         LocalDate purchaseDate = LocalDate.now();
@@ -80,10 +76,8 @@ class PurchaseServiceTest {
         when(exchangeRateService.getExchangeRateDate(targetCurrency, purchaseDate)).thenReturn(purchaseDate);
         when(exchangeRateService.getExchangeRate(targetCurrency, purchaseDate)).thenReturn(exchangeRate);
 
-        // Act
         PurchaseResponse response = purchaseService.getPurchaseInCurrency(purchaseId, targetCurrency);
 
-        // Assert
         assertNotNull(response);
         assertEquals(purchaseId, response.getId());
         assertEquals(new BigDecimal("100.00"), response.getOriginalAmount());
@@ -93,11 +87,9 @@ class PurchaseServiceTest {
 
     @Test
     void getPurchaseInCurrency_NonExistingPurchase_ThrowsException() {
-        // Arrange
         String purchaseId = "non-existing";
         when(purchaseRepository.findById(purchaseId)).thenReturn(Optional.empty());
 
-        // Act & Assert
         assertThrows(PurchaseNotFoundException.class,
                 () -> purchaseService.getPurchaseInCurrency(purchaseId, "EUR"));
     }

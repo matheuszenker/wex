@@ -44,7 +44,6 @@ class PurchaseIntegrationTest {
 
     @Test
     void createAndRetrievePurchase_Success() throws Exception {
-        // Setup mock responses
         PurchaseRequest request = new PurchaseRequest();
         request.setDescription("Test Purchase");
         request.setTransactionDate(LocalDate.now());
@@ -66,7 +65,6 @@ class PurchaseIntegrationTest {
 
         when(purchaseService.getPurchaseInCurrency("test-id", "EUR")).thenReturn(convertResponse);
 
-        // Create Purchase
         mockMvc.perform(post("/api/purchases")
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(objectMapper.writeValueAsString(request)))
@@ -75,7 +73,6 @@ class PurchaseIntegrationTest {
                 .andExpect(jsonPath("$.description").value("Test Purchase"))
                 .andExpect(jsonPath("$.originalAmount").value(100.0));
 
-        // Get Purchase with converted currency
         mockMvc.perform(get("/api/purchases/{id}/convert", "test-id")
                 .param("currency", "EUR"))
                 .andExpect(status().isOk())

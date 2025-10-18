@@ -23,44 +23,35 @@ public class RestTemplateConfig {
 
     @Bean
     public RestTemplate restTemplate() throws Exception {
-        // Trust all certificates
         TrustStrategy acceptingTrustStrategy = (cert, authType) -> true;
         
-        // Create SSL context that trusts all
         SSLContext sslContext = SSLContexts.custom()
                 .loadTrustMaterial(null, acceptingTrustStrategy)
                 .build();
         
-        // Create SSL connection factory with the trusting SSL context
         SSLConnectionSocketFactory csf = new SSLConnectionSocketFactory(
                 sslContext,
                 NoopHostnameVerifier.INSTANCE);
 
-        // Create registry with our SSL connection factory
         Registry<ConnectionSocketFactory> registry = RegistryBuilder.<ConnectionSocketFactory>create()
                 .register("http", PlainConnectionSocketFactory.getSocketFactory())
                 .register("https", csf)
                 .build();
 
-        // Create connection manager with our registry
         BasicHttpClientConnectionManager connectionManager = 
                 new BasicHttpClientConnectionManager(registry);
 
-        // Build HTTP client with our custom SSL settings
         CloseableHttpClient httpClient = HttpClients.custom()
                 .setConnectionManager(connectionManager)
                 .build();
 
-        // Create request factory with our HTTP client
         HttpComponentsClientHttpRequestFactory requestFactory = 
                 new HttpComponentsClientHttpRequestFactory();
         requestFactory.setHttpClient(httpClient);
         
-        // Set timeouts
         requestFactory.setConnectTimeout(10000);
         requestFactory.setConnectionRequestTimeout(10000);
 
-        // Create and return RestTemplate with our custom request factory
         return new RestTemplate(requestFactory);
     }
 }

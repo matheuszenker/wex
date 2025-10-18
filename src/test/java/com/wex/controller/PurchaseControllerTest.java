@@ -31,7 +31,6 @@ class PurchaseControllerTest {
 
     @Test
     void createPurchase_ValidRequest_ReturnsCreatedPurchase() throws Exception {
-        // Arrange
         PurchaseResponse mockResponse = new PurchaseResponse();
         mockResponse.setId("123");
         mockResponse.setDescription("Test Purchase");
@@ -39,7 +38,6 @@ class PurchaseControllerTest {
 
         when(purchaseService.createPurchase(any(PurchaseRequest.class))).thenReturn(mockResponse);
 
-        // Act & Assert
         mockMvc.perform(post("/api/purchases")
                 .contentType(MediaType.APPLICATION_JSON)
                 .content("{\"description\":\"Test Purchase\",\"transactionDate\":\"2025-10-15\",\"amount\":100.00}"))
@@ -58,7 +56,6 @@ class PurchaseControllerTest {
 
     @Test
     void getPurchaseInCurrency_ValidRequest_ReturnsConvertedPurchase() throws Exception {
-        // Arrange
         PurchaseResponse mockResponse = new PurchaseResponse();
         mockResponse.setId("123");
         mockResponse.setOriginalAmount(new BigDecimal("100.00"));
@@ -67,7 +64,6 @@ class PurchaseControllerTest {
 
         when(purchaseService.getPurchaseInCurrency("123", "EUR")).thenReturn(mockResponse);
 
-        // Act & Assert
         mockMvc.perform(get("/api/purchases/123/convert")
                 .param("currency", "EUR"))
                 .andExpect(status().isOk())
