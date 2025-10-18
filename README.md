@@ -103,3 +103,9 @@ The API may return the following errors:
 The application will be available at `http://localhost:8080`
 
 Note: The Docker build includes the Maven build process, so you don't need to run Maven commands separately when using Docker.
+
+### Running test suit
+
+```bash
+docker compose exec wex-api mvn test
+```
